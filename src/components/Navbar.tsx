@@ -3,11 +3,17 @@ import { Globe, ChevronDown } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import type { Language } from '../i18n/translations';
 
-const LANGUAGES: { code: Language; label: string; flag: string }[] = [
-  { code: 'ko', label: '한국어', flag: 'KR' },
-  { code: 'en', label: 'English', flag: 'US' },
-  { code: 'ru', label: 'Русский', flag: 'RU' },
-  { code: 'zh', label: '简体中文', flag: 'CN' },
+const LANGUAGES: { code: Language; label: string; tag: string }[] = [
+  { code: 'ko', label: '한국어', tag: 'KO' },
+  { code: 'en', label: 'English', tag: 'EN' },
+  { code: 'zh-CN', label: '简体中文', tag: 'ZH' },
+  { code: 'zh-TW', label: '繁體中文', tag: 'TW' },
+  { code: 'ja', label: '日本語', tag: 'JA' },
+  { code: 'ru', label: 'Русский', tag: 'RU' },
+  { code: 'es', label: 'Español', tag: 'ES' },
+  { code: 'pt-BR', label: 'Português (BR)', tag: 'PT' },
+  { code: 'de', label: 'Deutsch', tag: 'DE' },
+  { code: 'vi', label: 'Tiếng Việt', tag: 'VI' },
 ];
 
 export const Navbar: React.FC = () => {
@@ -74,12 +80,12 @@ export const Navbar: React.FC = () => {
               className="flex items-center gap-1.5 rounded-lg border border-white/[0.1] bg-[#12141c] px-2.5 py-1.5 text-[11px] font-medium text-zinc-300 hover:text-white hover:border-white/[0.2] transition-colors cursor-pointer"
             >
               <Globe className="w-3.5 h-3.5 text-blue-400" />
-              <span className="font-mono text-[10.5px] uppercase">{currentLang.code}</span>
+              <span className="font-mono text-[10.5px] uppercase font-bold">{currentLang.tag}</span>
               <ChevronDown className="w-3 h-3 text-zinc-500" />
             </button>
 
             {isLangOpen && (
-              <div className="absolute right-0 mt-1.5 w-32 rounded-xl border border-white/[0.1] bg-[#0e1017] p-1 shadow-2xl backdrop-blur-md z-50 animate-in fade-in zoom-in-95 duration-150">
+              <div className="absolute right-0 mt-1.5 w-40 max-h-80 overflow-y-auto rounded-xl border border-white/[0.1] bg-[#0e1017] p-1 shadow-2xl backdrop-blur-md z-50 animate-in fade-in zoom-in-95 duration-150">
                 {LANGUAGES.map((l) => (
                   <button
                     key={l.code}
@@ -95,7 +101,7 @@ export const Navbar: React.FC = () => {
                     }`}
                   >
                     <span>{l.label}</span>
-                    <span className="text-[10px] font-mono opacity-70 uppercase">{l.code}</span>
+                    <span className="text-[10px] font-mono opacity-70 font-semibold">{l.tag}</span>
                   </button>
                 ))}
               </div>

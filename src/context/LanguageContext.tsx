@@ -11,16 +11,25 @@ interface LanguageContextType {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const SUPPORTED: Language[] = ['ko', 'en', 'zh-CN', 'zh-TW', 'ja', 'ru', 'es', 'pt-BR', 'de', 'vi'];
+
   const [language, setLanguageState] = useState<Language>(() => {
     const saved = localStorage.getItem('sv_language') as Language;
-    if (saved && (saved === 'ko' || saved === 'en' || saved === 'ru' || saved === 'zh')) {
+    if (saved && SUPPORTED.includes(saved)) {
       return saved;
     }
     // Check browser language
-    const navLang = navigator.language.toLowerCase();
+    const navLang = (navigator.language || '').toLowerCase();
     if (navLang.startsWith('ko')) return 'ko';
+    if (navLang === 'zh-tw' || navLang === 'zh-hk') return 'zh-TW';
+    if (navLang.startsWith('zh')) return 'zh-CN';
+    if (navLang.startsWith('ja')) return 'ja';
     if (navLang.startsWith('ru')) return 'ru';
-    if (navLang.startsWith('zh')) return 'zh';
+    if (navLang.startsWith('es')) return 'es';
+    if (navLang.startsWith('pt')) return 'pt-BR';
+    if (navLang.startsWith('de')) return 'de';
+    if (navLang.startsWith('vi')) return 'vi';
+    if (navLang.startsWith('en')) return 'en';
     return 'ko'; // Default to Korean
   });
 
