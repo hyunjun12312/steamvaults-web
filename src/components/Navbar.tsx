@@ -1,19 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Globe, ChevronDown } from 'lucide-react';
+import { Earth, ChevronDown } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import type { Language } from '../i18n/translations';
 
-const LANGUAGES: { code: Language; label: string; tag: string }[] = [
-  { code: 'ko', label: '한국어', tag: 'KO' },
-  { code: 'en', label: 'English', tag: 'EN' },
-  { code: 'zh-CN', label: '简体中文', tag: 'ZH' },
-  { code: 'zh-TW', label: '繁體中文', tag: 'TW' },
-  { code: 'ja', label: '日本語', tag: 'JA' },
-  { code: 'ru', label: 'Русский', tag: 'RU' },
-  { code: 'es', label: 'Español', tag: 'ES' },
-  { code: 'pt-BR', label: 'Português (BR)', tag: 'PT' },
-  { code: 'de', label: 'Deutsch', tag: 'DE' },
-  { code: 'vi', label: 'Tiếng Việt', tag: 'VI' },
+const LANGUAGES: { code: Language; label: string }[] = [
+  { code: 'en', label: 'English' },
+  { code: 'ko', label: '한국어' },
+  { code: 'zh-CN', label: '简体中文' },
+  { code: 'zh-TW', label: '繁體中文' },
+  { code: 'ja', label: '日本語' },
+  { code: 'ru', label: 'Русский' },
+  { code: 'es', label: 'Español' },
+  { code: 'pt-BR', label: 'Português' },
+  { code: 'de', label: 'Deutsch' },
+  { code: 'vi', label: 'Tiếng Việt' },
 ];
 
 export const Navbar: React.FC = () => {
@@ -71,21 +71,21 @@ export const Navbar: React.FC = () => {
         </nav>
 
         {/* Right: Language Selector + Sign in with Steam */}
-        <div className="flex items-center gap-2.5">
-          {/* Language Selector Dropdown */}
+        <div className="flex items-center gap-3">
+          {/* Language Selector Dropdown (borderless, matching target design) */}
           <div className="relative" ref={dropdownRef}>
             <button
               type="button"
               onClick={() => setIsLangOpen(!isLangOpen)}
-              className="flex items-center gap-1.5 rounded-lg border border-white/[0.1] bg-[#12141c] px-2.5 py-1.5 text-[11px] font-medium text-zinc-300 hover:text-white hover:border-white/[0.2] transition-colors cursor-pointer"
+              className="flex items-center gap-1.5 py-1 text-xs font-normal text-zinc-400 hover:text-white transition-colors cursor-pointer select-none"
             >
-              <Globe className="w-3.5 h-3.5 text-blue-400" />
-              <span className="font-mono text-[10.5px] uppercase font-bold">{currentLang.tag}</span>
-              <ChevronDown className="w-3 h-3 text-zinc-500" />
+              <Earth className="w-3.5 h-3.5 text-zinc-400" />
+              <span>{currentLang.label}</span>
+              <ChevronDown className="w-3 h-3 text-zinc-400" />
             </button>
 
             {isLangOpen && (
-              <div className="absolute right-0 mt-1.5 w-40 max-h-80 overflow-y-auto rounded-xl border border-white/[0.1] bg-[#0e1017] p-1 shadow-2xl backdrop-blur-md z-50 animate-in fade-in zoom-in-95 duration-150">
+              <div className="absolute right-0 mt-2 w-36 max-h-80 overflow-y-auto rounded-xl border border-white/10 bg-[#0e1017]/95 p-1 shadow-2xl backdrop-blur-md z-50 animate-in fade-in zoom-in-95 duration-150">
                 {LANGUAGES.map((l) => (
                   <button
                     key={l.code}
@@ -94,14 +94,14 @@ export const Navbar: React.FC = () => {
                       setLanguage(l.code);
                       setIsLangOpen(false);
                     }}
-                    className={`flex items-center justify-between w-full px-2.5 py-1.5 rounded-lg text-left text-xs transition-colors cursor-pointer ${
+                    className={`flex items-center justify-between w-full px-3 py-1.5 rounded-lg text-left text-xs transition-colors cursor-pointer ${
                       language === l.code
-                        ? 'bg-blue-600 text-white font-semibold'
-                        : 'text-zinc-300 hover:bg-white/[0.06] hover:text-white'
+                        ? 'bg-white/10 text-white font-semibold'
+                        : 'text-zinc-400 hover:bg-white/[0.06] hover:text-white'
                     }`}
                   >
                     <span>{l.label}</span>
-                    <span className="text-[10px] font-mono opacity-70 font-semibold">{l.tag}</span>
+                    {language === l.code && <span className="text-zinc-400 text-xs">✓</span>}
                   </button>
                 ))}
               </div>
