@@ -3,6 +3,8 @@ import { Earth, ChevronDown } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import type { Language } from '../i18n/translations';
 
+import svLogo from '../assets/sv_logo.png';
+
 const LANGUAGES: { code: Language; label: string }[] = [
   { code: 'en', label: 'English' },
   { code: 'ko', label: '한국어' },
@@ -36,26 +38,16 @@ export const Navbar: React.FC = () => {
   return (
     <header className="sticky top-0 z-50 w-full bg-black/80 backdrop-blur-md border-b border-white/[0.06]">
       <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-6 sm:px-8">
-        {/* Left: Brand with faceted sapphire crystal icon */}
-        <a href="/" className="flex items-center gap-2">
-          <div className="flex h-5 w-5 items-center justify-center text-blue-400">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-              <path
-                d="M12 2L20 6.5V17.5L12 22L4 17.5V6.5L12 2Z"
-                stroke="currentColor"
-                strokeWidth="1.8"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M12 2V12M12 12L20 17.5M12 12L4 17.5M12 12L20 6.5M12 6.5"
-                stroke="currentColor"
-                strokeWidth="1.2"
-                strokeOpacity="0.7"
-              />
-            </svg>
-          </div>
-          <span className="text-[13px] font-bold tracking-tight text-white">
-            SteamVaults
+        {/* Left: Official SteamVaults Brand with SV badge */}
+        <a href="/" className="flex items-center gap-2.5 group cursor-pointer">
+          <img
+            src={svLogo}
+            alt="SteamVaults"
+            className="h-6 w-auto object-contain transition-transform group-hover:scale-105"
+          />
+          <span className="text-[16px] font-bold tracking-tight select-none">
+            <span className="text-[#57b9ee]">Steam</span>
+            <span className="text-white">Vaults</span>
           </span>
         </a>
 
