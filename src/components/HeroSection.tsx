@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Clock, ShieldCheck, CheckCircle2, ArrowRight, ExternalLink, X, RefreshCw } from 'lucide-react';
+import { Clock, RefreshCw } from 'lucide-react';
 import gemSapphire4k from '../assets/sapphire_gem_4k.png';
 import { RollingNumber } from './RollingNumber';
 import { useLanguage } from '../context/LanguageContext';
@@ -10,8 +10,6 @@ export const HeroSection: React.FC = () => {
   const [quantity, setQuantity] = useState<number>(100);
   const [timeLeft, setTimeLeft] = useState<number>(23);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
-  const [isTradeModalOpen, setIsTradeModalOpen] = useState<boolean>(false);
-  const [tradeStep, setTradeStep] = useState<'pending' | 'success'>('pending');
 
   // Realistic Steam Sack of Gems rates (1 Sack = 1,000 Gems)
   // 100 Sacks = $27.40 ($0.274 per Sack) matches screenshot exactly
@@ -41,11 +39,6 @@ export const HeroSection: React.FC = () => {
     setTimeout(() => setIsRefreshing(false), 400);
   };
 
-  const handleOpenTradeModal = () => {
-    setTradeStep('pending');
-    setIsTradeModalOpen(true);
-  };
-
   const maxQuantity = 500;
   const sliderPercentage = ((quantity - 1) / (maxQuantity - 1)) * 100;
 
@@ -62,16 +55,6 @@ export const HeroSection: React.FC = () => {
       />
 
       <div className="relative mx-auto max-w-4xl px-4 sm:px-6">
-        {/* Eyebrow Pill: ● LIVE SACK OF GEMS QUOTE • POLYGON POS */}
-        <div className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-[#16171a]/90 px-3.5 py-1 text-xs mb-4 shadow-sm">
-          <span className="flex items-center gap-1 text-rose-500 font-semibold text-[10.5px]">
-            <span className="h-1.5 w-1.5 rounded-full bg-rose-500 animate-pulse" />
-            LIVE
-          </span>
-          <span className="text-zinc-400 font-medium tracking-wide text-[10.5px]">
-            {t.hero.liveQuote} • {t.hero.polygonNetwork}
-          </span>
-        </div>
 
         {/* Master Headline */}
         <h1 className="text-3xl sm:text-4xl lg:text-[44px] font-bold tracking-tight text-white leading-[1.12] mb-8 sm:mb-12">
@@ -221,123 +204,18 @@ export const HeroSection: React.FC = () => {
             </button>
 
             {/* Row 6: Sell / Buy for $XX.XX USDT → Button with Rolling Numbers */}
-            <button
-              type="button"
-              onClick={handleOpenTradeModal}
+            <a
+              href={activeTab === 'sell' ? `/sell?quantity=${quantity}` : `/buy?quantity=${quantity}`}
               className="w-full py-3 sm:py-3.5 rounded-xl bg-white text-black font-extrabold text-sm flex items-center justify-center gap-1.5 hover:bg-zinc-200 transition-all shadow-lg cursor-pointer active:scale-[0.99]"
             >
               <span>{activeTab === 'sell' ? t.hero.sellBtn : t.hero.buyBtn}</span>
               <RollingNumber value={totalAmount} prefix="$" className="font-extrabold" />
               <span>USDT</span>
               <span className="font-bold">→</span>
-            </button>
+            </a>
           </div>
         </div>
       </div>
-
-      {/* Interactive Trade Execution Modal */}
-      {isTradeModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-          <div className="relative w-full max-w-md rounded-2xl bg-[#0e1017] border border-blue-500/30 p-6 shadow-2xl text-left space-y-4">
-            {/* Modal Header */}
-            <div className="flex items-center justify-between pb-3 border-b border-white/[0.08]">
-              <div className="flex items-center gap-2">
-                <ShieldCheck className="w-5 h-5 text-blue-400" />
-                <h3 className="text-sm font-bold text-white">
-                  {activeTab === 'sell' ? t.hero.modalTitleSell : t.hero.modalTitleBuy}
-                </h3>
-              </div>
-              <button
-                type="button"
-                onClick={() => setIsTradeModalOpen(false)}
-                className="p-1 rounded-lg text-zinc-400 hover:text-white hover:bg-white/[0.06] transition-colors"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-
-            {/* Modal Body */}
-            {tradeStep === 'pending' ? (
-              <div className="space-y-4">
-                <div className="rounded-xl bg-[#06070a] p-4 border border-white/[0.06] space-y-2.5">
-                  <div className="flex justify-between text-xs">
-                    <span className="text-zinc-400">{t.hero.modalAsset}</span>
-                    <span className="font-mono text-white font-semibold">
-                      Sack of Gems × {quantity} ({(quantity * 1000).toLocaleString()} Gems)
-                    </span>
-                  </div>
-                  <div className="flex justify-between text-xs">
-                    <span className="text-zinc-400">{t.hero.modalPayout}</span>
-                    <span className="font-mono text-blue-400 font-bold text-sm">
-                      ${totalAmount.toFixed(2)} USDT
-                    </span>
-                  </div>
-                  <div className="flex justify-between text-xs">
-                    <span className="text-zinc-400">{t.hero.modalNetwork}</span>
-                    <span className="font-mono text-zinc-300">Polygon PoS (POL)</span>
-                  </div>
-                  <div className="flex justify-between text-xs">
-                    <span className="text-zinc-400">{t.hero.modalFreezeRemaining}</span>
-                    <span className="font-mono text-amber-400 font-semibold">{timeLeft}s (0% Slippage)</span>
-                  </div>
-                </div>
-
-                {/* Progress Steps */}
-                <div className="space-y-2 text-xs">
-                  <div className="flex items-center gap-2 text-emerald-400">
-                    <CheckCircle2 className="w-4 h-4" />
-                    <span>1. {t.hero.modalStep1}</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-blue-400 animate-pulse">
-                    <Clock className="w-4 h-4" />
-                    <span>2. {t.hero.modalStep2}</span>
-                  </div>
-                </div>
-
-                {/* Action Buttons */}
-                <div className="flex gap-2 pt-2">
-                  <button
-                    type="button"
-                    onClick={() => setTradeStep('success')}
-                    className="flex-1 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer"
-                  >
-                    <span>{t.hero.modalSimulateBtn}</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
-                  <a
-                    href="https://steamcommunity.com/my/tradeoffers"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="px-3.5 py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-medium flex items-center gap-1 transition-colors"
-                  >
-                    <ExternalLink className="w-3.5 h-3.5" />
-                    <span>{t.hero.modalOpenSteamBtn}</span>
-                  </a>
-                </div>
-              </div>
-            ) : (
-              <div className="py-6 text-center space-y-3 animate-in zoom-in-95 duration-200">
-                <div className="w-12 h-12 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center mx-auto text-emerald-400">
-                  <CheckCircle2 className="w-6 h-6" />
-                </div>
-                <h4 className="text-base font-bold text-white">{t.hero.modalSuccessTitle}</h4>
-                <p className="text-xs text-zinc-300 max-w-xs mx-auto leading-relaxed">
-                  {t.hero.modalSuccessDesc}
-                </p>
-                <div className="pt-2">
-                  <button
-                    type="button"
-                    onClick={() => setIsTradeModalOpen(false)}
-                    className="px-6 py-2 rounded-xl bg-white text-black font-bold text-xs hover:bg-zinc-200 transition-colors cursor-pointer"
-                  >
-                    {t.hero.modalConfirmBtn}
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
     </section>
   );
 };

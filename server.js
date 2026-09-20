@@ -57,5 +57,5 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, '0.0.0.0', () => {
-  console.log(SteamVaults server running on port );
+  console.log(`SteamVaults server running on port ${PORT}`);
 });
