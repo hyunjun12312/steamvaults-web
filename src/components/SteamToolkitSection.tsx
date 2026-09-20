@@ -238,42 +238,6 @@ export const SteamToolkitSection: React.FC = () => {
                 {t.toolkit.subtitle}
               </p>
             </div>
-
-            {/* Right Header Status: Live Stream Indicator, Counts & Shock Alerts */}
-            <div className="flex flex-wrap items-center gap-2.5 sm:gap-4 font-mono text-xs shrink-0 self-start sm:self-center">
-              {/* Live Streaming Pulsing Pill */}
-              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-950/60 border border-emerald-500/30 text-[11px] font-mono text-emerald-400">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-                </span>
-                <span className="font-semibold tracking-wider">LIVE FEED</span>
-                <span className="text-zinc-600">·</span>
-                <span className="text-zinc-400 text-[10px]">#{tickCount}</span>
-              </div>
-
-              {/* Real-time Shock Spike Alert Banner */}
-              {shockAlert && (
-                <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-950/70 border border-amber-500/60 text-[11px] font-mono text-amber-300 animate-pulse">
-                  <span>⚡</span>
-                  <span className="font-bold truncate max-w-[120px]">{shockAlert.name}</span>
-                  <span className="text-red-400 font-extrabold">±{shockAlert.pct}%</span>
-                </div>
-              )}
-
-              <div className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-                <span className="text-red-500 font-bold">{t.toolkit.trendDown} {counts.down}</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                <span className="text-emerald-500 font-bold">{t.toolkit.trendUp} {counts.up}</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-amber-400" />
-                <span className="text-amber-400 font-bold">{t.toolkit.trendNeutral} {counts.flat}</span>
-              </div>
-            </div>
           </div>
 
           {/* Sub-header above Treemap and Sidebar */}
